@@ -8,6 +8,9 @@ Aplikasi Point of Sale (POS) sederhana untuk restoran yang memungkinkan pengguna
 - **Manajemen Menu**: Menambah, mengubah, dan menghapus menu restoran.
 - **Antarmuka Pengguna**: Antarmuka yang mudah digunakan untuk kasir.
 
+## Akses Online
+Website ini dapat diakses secara langsung di [https://restaurant-cashier.netlify.app/](https://restaurant-cashier.netlify.app/).
+
 ## Instalasi
 
 Untuk menjalankan aplikasi ini secara lokal, ikuti langkah-langkah berikut:
@@ -42,13 +45,3 @@ Aplikasi akan berjalan di `http://localhost:3000` (atau port lain yang ditentuka
 
 ## Penggunaan
 Setelah aplikasi dijalankan, kasir dapat melakukan transaksi pembayaran untuk pesanan pelanggan dan mengelola menu yang tersedia.
-
-## Kontribusi
-1. Fork repositori ini.
-2. Buat cabang (`git checkout -b fitur-xyz`).
-3. Lakukan perubahan dan commit (`git commit -m 'Menambahkan fitur xyz'`).
-4. Push perubahan ke cabang (`git push origin fitur-xyz`).
-5. Kirim pull request untuk dikaji.
-
-## Lisensi
-Proyek ini dilisensikan di bawah [MIT License](LICENSE).
