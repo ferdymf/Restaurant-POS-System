@@ -1,6 +1,27 @@
-import React, { useState, useRef } from 'react';
-import { ShoppingCart, Package, CreditCard, Trash2, Plus, Minus, X, Wallet, Receipt, Cast, Coffee, Pizza, Beer, IceCream, ChefHat, Clock, Users, Star } from 'lucide-react';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import React, { useState, useRef, useEffect } from "react";
+import {
+  ShoppingCart,
+  Package,
+  CreditCard,
+  Trash2,
+  Plus,
+  Minus,
+  X,
+  Wallet,
+  Receipt,
+  Cast,
+  Coffee,
+  Pizza,
+  Beer,
+  IceCream,
+  ChefHat,
+  Clock,
+  Users,
+  Star,
+  Sun,
+  Moon,
+} from "lucide-react";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 interface Product {
   id: number;
@@ -31,44 +52,71 @@ function App() {
   const [showPOS, setShowPOS] = useState(false);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [showPayment, setShowPayment] = useState(false);
-  const [selectedPayment, setSelectedPayment] = useState<string>('');
-  const [receivedAmount, setReceivedAmount] = useState<string>('');
+  const [selectedPayment, setSelectedPayment] = useState<string>("");
+  const [receivedAmount, setReceivedAmount] = useState<string>("");
   const [paymentComplete, setPaymentComplete] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [addedToCart, setAddedToCart] = useState<number | null>(null);
-  
+
   const homePageRef = useRef(null);
   const posPageRef = useRef(null);
 
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    if (typeof window === "undefined") return "light";
+    const stored = localStorage.getItem("theme");
+    if (stored === "light" || stored === "dark")
+      return stored as "light" | "dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === "dark") root.classList.add("dark");
+    else root.classList.remove("dark");
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () =>
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+
   const categories: Category[] = [
-    { id: 'all', name: 'All Items', icon: <Package className="h-6 w-6" /> },
-    { id: 'drinks', name: 'Drinks', icon: <Coffee className="h-6 w-6" /> },
-    { id: 'main', name: 'Main Course', icon: <Pizza className="h-6 w-6" /> },
-    { id: 'beverages', name: 'Beverages', icon: <Beer className="h-6 w-6" /> },
-    { id: 'desserts', name: 'Desserts', icon: <IceCream className="h-6 w-6" /> }
+    { id: "all", name: "All Items", icon: <Package className="h-6 w-6" /> },
+    { id: "drinks", name: "Drinks", icon: <Coffee className="h-6 w-6" /> },
+    { id: "main", name: "Main Course", icon: <Pizza className="h-6 w-6" /> },
+    { id: "beverages", name: "Beverages", icon: <Beer className="h-6 w-6" /> },
+    {
+      id: "desserts",
+      name: "Desserts",
+      icon: <IceCream className="h-6 w-6" />,
+    },
   ];
 
   const features = [
     {
       icon: <ChefHat className="h-12 w-12 text-blue-600" />,
       title: "Premium Quality",
-      description: "Experience the finest ingredients and expert preparation in every dish"
+      description:
+        "Experience the finest ingredients and expert preparation in every dish",
     },
     {
       icon: <Clock className="h-12 w-12 text-blue-600" />,
       title: "Fast Service",
-      description: "Quick and efficient service without compromising on quality"
+      description:
+        "Quick and efficient service without compromising on quality",
     },
     {
       icon: <Users className="h-12 w-12 text-blue-600" />,
       title: "Friendly Staff",
-      description: "Our well-trained staff ensures a pleasant dining experience"
+      description:
+        "Our well-trained staff ensures a pleasant dining experience",
     },
     {
       icon: <Star className="h-12 w-12 text-blue-600" />,
       title: "Best Value",
-      description: "Exceptional quality at competitive prices"
-    }
+      description: "Exceptional quality at competitive prices",
+    },
   ];
 
   const products: Product[] = [
@@ -234,23 +282,163 @@ function App() {
       image:
         "https://cdn.rri.co.id/berita/Meulaboh/o/1715678442448-resepku_yummy/4uglemag5tf98jn.jpeg",
     },
+    {
+      id: 19,
+      name: "Americano",
+      price: 22000,
+      category: "drinks",
+      description: "Smooth espresso diluted with hot water",
+      image:
+        "https://images.unsplash.com/photo-1532004491497-ba35c367d634?w=400&auto=format&fit=crop&q=60",
+    },
+    {
+      id: 20,
+      name: "Latte",
+      price: 32000,
+      category: "drinks",
+      description: "Silky steamed milk with rich espresso",
+      image:
+        "https://images.unsplash.com/photo-1494314671902-399b18174975?w=400&auto=format&fit=crop&q=60",
+    },
+    {
+      id: 21,
+      name: "Mocha",
+      price: 35000,
+      category: "drinks",
+      description: "Chocolate meets espresso and milk",
+      image:
+        "https://images.unsplash.com/photo-1503481766315-7a586b20f66f?w=400&auto=format&fit=crop&q=60",
+    },
+    {
+      id: 22,
+      name: "Ayam Bakar",
+      price: 48000,
+      category: "main",
+      description: "Grilled chicken with sweet soy glaze",
+      image:
+        "https://images.unsplash.com/photo-1604908554007-41d30b9bca7e?w=400&auto=format&fit=crop&q=60",
+    },
+    {
+      id: 23,
+      name: "Iga Bakar",
+      price: 98000,
+      category: "main",
+      description: "Chargrilled beef ribs with special sauce",
+      image:
+        "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&auto=format&fit=crop&q=60",
+    },
+    {
+      id: 24,
+      name: "Sop Buntut",
+      price: 92000,
+      category: "main",
+      description: "Indonesian oxtail soup with spices",
+      image:
+        "https://images.unsplash.com/photo-1655144852662-9988fd3504d3?w=400&auto=format&fit=crop&q=60",
+    },
+    {
+      id: 25,
+      name: "Gurame Goreng",
+      price: 78000,
+      category: "main",
+      description: "Crispy fried gourami with sambal",
+      image:
+        "https://images.unsplash.com/photo-1536305030015-0c2ffe9536d5?w=400&auto=format&fit=crop&q=60",
+    },
+    {
+      id: 26,
+      name: "Lemon Tea",
+      price: 16000,
+      category: "beverages",
+      description: "Refreshing iced tea with fresh lemon",
+      image:
+        "https://images.unsplash.com/photo-1542736667-069246bdbc9a?w=400&auto=format&fit=crop&q=60",
+    },
+    {
+      id: 27,
+      name: "Lychee Tea",
+      price: 20000,
+      category: "beverages",
+      description: "Sweet tea infused with lychee",
+      image:
+        "https://images.unsplash.com/photo-1623428454614-9ff60b05e8bb?w=400&auto=format&fit=crop&q=60",
+    },
+    {
+      id: 28,
+      name: "Strawberry Smoothie",
+      price: 28000,
+      category: "beverages",
+      description: "Blended strawberries with yogurt",
+      image:
+        "https://images.unsplash.com/photo-1505253456080-06f6d1a7ed34?w=400&auto=format&fit=crop&q=60",
+    },
+    {
+      id: 29,
+      name: "Brownies",
+      price: 24000,
+      category: "desserts",
+      description: "Fudgy chocolate brownies",
+      image:
+        "https://images.unsplash.com/photo-1606313564200-e75d5e30476e?w=400&auto=format&fit=crop&q=60",
+    },
+    {
+      id: 30,
+      name: "Panna Cotta",
+      price: 30000,
+      category: "desserts",
+      description: "Creamy Italian dessert with berry coulis",
+      image:
+        "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400&auto=format&fit=crop&q=60",
+    },
+    {
+      id: 31,
+      name: "Cheesecake",
+      price: 38000,
+      category: "desserts",
+      description: "Classic baked cheesecake slice",
+      image:
+        "https://images.unsplash.com/photo-1562440499-64c9a111f713?w=400&auto=format&fit=crop&q=60",
+    },
+    {
+      id: 32,
+      name: "Chicken Katsu",
+      price: 52000,
+      category: "main",
+      description: "Crispy fried chicken cutlet with sauce",
+      image:
+        "https://images.unsplash.com/photo-1562158070-1c010d030c3a?w=400&auto=format&fit=crop&q=60",
+    },
+    {
+      id: 33,
+      name: "Fruit Salad",
+      price: 26000,
+      category: "desserts",
+      description: "Seasonal fruits with honey lime dressing",
+      image:
+        "https://images.unsplash.com/photo-1557308525-4b3ab05f16f0?w=400&auto=format&fit=crop&q=60",
+    },
   ];
 
   const paymentMethods: PaymentMethod[] = [
-    { id: 'cash', name: 'Cash', icon: <Cast className="h-6 w-6" /> },
-    { id: 'card', name: 'Credit Card', icon: <CreditCard className="h-6 w-6" /> },
-    { id: 'ewallet', name: 'E-Wallet', icon: <Wallet className="h-6 w-6" /> }
+    { id: "cash", name: "Cash", icon: <Cast className="h-6 w-6" /> },
+    {
+      id: "card",
+      name: "Credit Card",
+      icon: <CreditCard className="h-6 w-6" />,
+    },
+    { id: "ewallet", name: "E-Wallet", icon: <Wallet className="h-6 w-6" /> },
   ];
 
-  const filteredProducts = selectedCategory === 'all' 
-    ? products 
-    : products.filter(product => product.category === selectedCategory);
+  const filteredProducts =
+    selectedCategory === "all"
+      ? products
+      : products.filter((product) => product.category === selectedCategory);
 
   const addToCart = (product: Product) => {
-    setCart(currentCart => {
-      const existingItem = currentCart.find(item => item.id === product.id);
+    setCart((currentCart) => {
+      const existingItem = currentCart.find((item) => item.id === product.id);
       if (existingItem) {
-        return currentCart.map(item =>
+        return currentCart.map((item) =>
           item.id === product.id
             ? { ...item, quantity: item.quantity + 1 }
             : item
@@ -263,58 +451,84 @@ function App() {
   };
 
   const removeFromCart = (productId: number) => {
-    setCart(currentCart => currentCart.filter(item => item.id !== productId));
-  };
-
-  const updateQuantity = (productId: number, delta: number) => {
-    setCart(currentCart =>
-      currentCart.map(item => {
-        if (item.id === productId) {
-          const newQuantity = item.quantity + delta;
-          return newQuantity > 0
-            ? { ...item, quantity: newQuantity }
-            : item;
-        }
-        return item;
-      }).filter(item => item.quantity > 0)
+    setCart((currentCart) =>
+      currentCart.filter((item) => item.id !== productId)
     );
   };
 
-  const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const updateQuantity = (productId: number, delta: number) => {
+    setCart((currentCart) =>
+      currentCart
+        .map((item) => {
+          if (item.id === productId) {
+            const newQuantity = item.quantity + delta;
+            return newQuantity > 0 ? { ...item, quantity: newQuantity } : item;
+          }
+          return item;
+        })
+        .filter((item) => item.quantity > 0)
+    );
+  };
+
+  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR'
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
     }).format(price);
+  };
+
+  const parseAmount = (val: string): number | null => {
+    const clean = (val || "").toString().replace(/[^0-9.-]+/g, "");
+    if (clean.trim() === "") return null;
+    const n = Number(clean);
+    return Number.isFinite(n) ? n : null;
+  };
+
+  const isValidCash = () => {
+    const received = parseAmount(receivedAmount);
+    return received !== null && received >= total;
   };
 
   const handlePayment = () => {
     if (!selectedPayment) return;
-    
-    if (selectedPayment === 'cash') {
-      const received = parseFloat(receivedAmount.replace(/[^0-9.-]+/g, ''));
-      if (received < total) return;
+
+    if (selectedPayment === "cash") {
+      const received = parseAmount(receivedAmount);
+      if (received === null || received < total) return;
     }
-    
+
     setPaymentComplete(true);
     setTimeout(() => {
       setShowPayment(false);
       setPaymentComplete(false);
-      setSelectedPayment('');
-      setReceivedAmount('');
+      setSelectedPayment("");
+      setReceivedAmount("");
       setCart([]);
     }, 2000);
   };
 
   const getChange = () => {
-    if (!receivedAmount) return 0;
-    const received = parseFloat(receivedAmount.replace(/[^0-9.-]+/g, ''));
+    const received = parseAmount(receivedAmount);
+    if (received === null) return 0;
     return Math.max(0, received - total);
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+      <button
+        onClick={toggleTheme}
+        className="fixed top-4 right-4 z-50 p-2 rounded-full bg-white text-gray-800 shadow hover:shadow-md transition dark:bg-gray-800 dark:text-gray-100"
+        aria-label="Toggle theme"
+        title="Toggle theme"
+      >
+        {theme === "dark" ? (
+          <Sun className="h-5 w-5" />
+        ) : (
+          <Moon className="h-5 w-5" />
+        )}
+      </button>
       <CSSTransition
         in={!showPOS}
         timeout={300}
@@ -322,55 +536,88 @@ function App() {
         unmountOnExit
         nodeRef={homePageRef}
       >
-        <div ref={homePageRef} className="min-h-screen bg-white">
+        <div
+          ref={homePageRef}
+          className="min-h-screen bg-white dark:bg-gray-900"
+        >
           {/* Hero Section */}
           <div className="relative bg-gradient-to-r from-blue-600 to-blue-800 text-white">
             <div className="max-w-7xl mx-auto px-4 py-24 sm:px-6 lg:px-8">
               <div className="text-center">
-                <h1 className="text-4xl md:text-6xl font-bold mb-6">Welcome to Our Restaurant</h1>
-                <p className="text-xl md:text-2xl mb-8">Experience the perfect blend of taste and technology</p>
+                <h1 className="text-4xl md:text-6xl font-bold mb-6">
+                  Welcome to Our Restaurant
+                </h1>
+                <p className="text-xl md:text-2xl mb-8">
+                  Experience the perfect blend of taste and technology
+                </p>
                 <button
                   onClick={() => setShowPOS(true)}
-                  className="bg-white text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-50 transition-colors duration-300"
+                  className="bg-white text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-50 transition-colors duration-300 dark:bg-gray-900 dark:text-white dark:hover:bg-gray-800"
                 >
                   Order Now
                 </button>
               </div>
             </div>
-            <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent"></div>
+            <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent dark:from-gray-900"></div>
           </div>
 
           {/* Features Section */}
           <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900">Why Choose Us</h2>
-              <p className="mt-4 text-lg text-gray-600">Discover what makes our restaurant special</p>
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                Why Choose Us
+              </h2>
+              <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
+                Discover what makes our restaurant special
+              </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {features.map((feature, index) => (
-                <div key={index} className="bg-white p-6 rounded-xl shadow-lg text-center">
+                <div
+                  key={index}
+                  className="bg-white p-6 rounded-xl shadow-lg text-center dark:bg-gray-800"
+                >
                   <div className="flex justify-center mb-4">{feature.icon}</div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{feature.title}</h3>
-                  <p className="text-gray-600">{feature.description}</p>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {feature.description}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Featured Menu Section */}
-          <div className="bg-gray-50 py-16">
+          <div className="bg-gray-50 dark:bg-gray-950 py-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-gray-900">Featured Menu</h2>
-                <p className="mt-4 text-lg text-gray-600">A taste of our most popular dishes</p>
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                  Featured Menu
+                </h2>
+                <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
+                  A taste of our most popular dishes
+                </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {products.slice(0, 3).map(product => (
-                  <div key={product.id} className="bg-white rounded-xl shadow-lg overflow-hidden">
-                    <img src={product.image} alt={product.name} className="w-full h-48 object-cover" />
+                {products.slice(0, 3).map((product) => (
+                  <div
+                    key={product.id}
+                    className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden"
+                  >
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-48 object-cover"
+                    />
                     <div className="p-6">
-                      <h3 className="text-xl font-semibold text-gray-900">{product.name}</h3>
-                      <p className="text-gray-600 mt-2">{formatPrice(product.price)}</p>
+                      <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                        {product.name}
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-300 mt-2">
+                        {formatPrice(product.price)}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -404,9 +651,24 @@ function App() {
                 <div>
                   <h3 className="text-xl font-semibold mb-4">Follow Us</h3>
                   <div className="flex space-x-4">
-                    <a href="#" className="hover:text-blue-400 transition-colors">Instagram</a>
-                    <a href="#" className="hover:text-blue-400 transition-colors">Facebook</a>
-                    <a href="#" className="hover:text-blue-400 transition-colors">Twitter</a>
+                    <a
+                      href="#"
+                      className="hover:text-blue-400 transition-colors"
+                    >
+                      Instagram
+                    </a>
+                    <a
+                      href="#"
+                      className="hover:text-blue-400 transition-colors"
+                    >
+                      Facebook
+                    </a>
+                    <a
+                      href="#"
+                      className="hover:text-blue-400 transition-colors"
+                    >
+                      Twitter
+                    </a>
                   </div>
                 </div>
               </div>
@@ -422,17 +684,22 @@ function App() {
         unmountOnExit
         nodeRef={posPageRef}
       >
-        <div ref={posPageRef} className="min-h-screen bg-gray-100">
-          <nav className="bg-white shadow-lg">
+        <div
+          ref={posPageRef}
+          className="min-h-screen bg-gray-100 dark:bg-gray-950"
+        >
+          <nav className="bg-white dark:bg-gray-800 shadow-lg">
             <div className="max-w-7xl mx-auto px-4 py-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <Package className="h-8 w-8 text-blue-600" />
-                  <span className="ml-2 text-xl font-semibold text-gray-800">POS System</span>
+                  <span className="ml-2 text-xl font-semibold text-gray-800 dark:text-gray-100">
+                    POS System
+                  </span>
                 </div>
                 <button
                   onClick={() => setShowPOS(false)}
-                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                  className="text-gray-600 hover:text-gray-900 transition-colors dark:text-gray-300 dark:hover:text-white"
                 >
                   Back to Home
                 </button>
@@ -444,19 +711,19 @@ function App() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Products Section */}
               <div className="lg:col-span-2">
-                <div className="bg-white rounded-lg shadow-lg p-6">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
                   {/* Categories */}
                   <div className="mb-8">
                     <h2 className="text-2xl font-semibold mb-4">Categories</h2>
                     <div className="flex space-x-4 overflow-x-auto pb-2">
-                      {categories.map(category => (
+                      {categories.map((category) => (
                         <button
                           key={category.id}
                           onClick={() => setSelectedCategory(category.id)}
                           className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-300 ${
                             selectedCategory === category.id
-                              ? 'bg-blue-600 text-white'
-                              : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                              ? "bg-blue-600 text-white"
+                              : "bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-100"
                           }`}
                         >
                           {category.icon}
@@ -469,21 +736,21 @@ function App() {
                   {/* Products Grid */}
                   <div className="menu-grid-container">
                     <TransitionGroup className="menu-grid">
-                      {filteredProducts.map(product => (
+                      {filteredProducts.map((product) => (
                         <CSSTransition
                           key={product.id}
                           timeout={300}
                           classNames="menu-item-transition"
                         >
-                          <div 
-                            className={`menu-item bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 ${
-                              addedToCart === product.id ? 'added-to-cart' : ''
+                          <div
+                            className={`menu-item bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-all duration-300 ${
+                              addedToCart === product.id ? "added-to-cart" : ""
                             }`}
                           >
                             <div className="relative overflow-hidden">
-                              <img 
-                                src={product.image} 
-                                alt={product.name} 
+                              <img
+                                src={product.image}
+                                alt={product.name}
                                 className="w-full h-48 object-cover transition-transform duration-300"
                               />
                               <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
@@ -493,9 +760,15 @@ function App() {
                               </div>
                             </div>
                             <div className="p-4">
-                              <h3 className="text-lg font-semibold">{product.name}</h3>
-                              <p className="text-gray-600 text-sm mt-1">{product.description}</p>
-                              <p className="text-blue-600 font-semibold mt-2">{formatPrice(product.price)}</p>
+                              <h3 className="text-lg font-semibold">
+                                {product.name}
+                              </h3>
+                              <p className="text-gray-600 dark:text-gray-300 text-sm mt-1">
+                                {product.description}
+                              </p>
+                              <p className="text-blue-600 font-semibold mt-2">
+                                {formatPrice(product.price)}
+                              </p>
                               <button
                                 onClick={() => addToCart(product)}
                                 className="add-to-cart-button mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-all duration-300 flex items-center justify-center space-x-2"
@@ -514,40 +787,49 @@ function App() {
 
               {/* Cart Section */}
               <div className="lg:col-span-1">
-                <div className="bg-white rounded-lg shadow-lg p-6 sticky top-8">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sticky top-8">
                   <div className="flex items-center mb-6">
                     <ShoppingCart className="h-6 w-6 text-blue-600" />
                     <h2 className="text-2xl font-semibold ml-2">Cart</h2>
                   </div>
 
                   {cart.length === 0 ? (
-                    <p className="text-gray-500 text-center py-8">Your cart is empty</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-center py-8">
+                      Your cart is empty
+                    </p>
                   ) : (
                     <>
                       <div className="space-y-4 mb-6">
-                        {cart.map(item => (
-                          <div key={item.id} className="flex items-center justify-between border-b pb-4">
+                        {cart.map((item) => (
+                          <div
+                            key={item.id}
+                            className="flex items-center justify-between border-b pb-4"
+                          >
                             <div>
                               <h3 className="font-medium">{item.name}</h3>
-                              <p className="text-gray-600">{formatPrice(item.price)}</p>
+                              <p className="text-gray-600 dark:text-gray-300">
+                                {formatPrice(item.price)}
+                              </p>
                             </div>
                             <div className="flex items-center space-x-2">
                               <button
                                 onClick={() => updateQuantity(item.id, -1)}
-                                className="p-1 rounded-full hover:bg-gray-100 transition-colors"
+                                className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                               >
                                 <Minus className="h-4 w-4" />
                               </button>
-                              <span className="w-8 text-center">{item.quantity}</span>
+                              <span className="w-8 text-center">
+                                {item.quantity}
+                              </span>
                               <button
                                 onClick={() => updateQuantity(item.id, 1)}
-                                className="p-1 rounded-full hover:bg-gray-100 transition-colors"
+                                className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                               >
                                 <Plus className="h-4 w-4" />
                               </button>
                               <button
                                 onClick={() => removeFromCart(item.id)}
-                                className="p-1 text-red-500 rounded-full hover:bg-red-50 transition-colors"
+                                className="p-1 text-red-500 rounded-full hover:bg-red-50 dark:hover:bg-red-950 transition-colors"
                               >
                                 <Trash2 className="h-4 w-4" />
                               </button>
@@ -558,7 +840,9 @@ function App() {
                       <div className="border-t pt-4">
                         <div className="flex justify-between items-center mb-6">
                           <span className="text-lg font-semibold">Total:</span>
-                          <span className="text-xl font-bold text-blue-600">{formatPrice(total)}</span>
+                          <span className="text-xl font-bold text-blue-600">
+                            {formatPrice(total)}
+                          </span>
                         </div>
                         <button
                           onClick={() => setShowPayment(true)}
@@ -578,12 +862,12 @@ function App() {
           {/* Payment Modal */}
           {showPayment && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-              <div className="bg-white rounded-lg max-w-md w-full p-6">
+              <div className="bg-white dark:bg-gray-800 rounded-lg max-w-md w-full p-6">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-2xl font-semibold">Payment</h2>
                   <button
                     onClick={() => setShowPayment(false)}
-                    className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+                    className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
                   >
                     <X className="h-6 w-6" />
                   </button>
@@ -592,22 +876,26 @@ function App() {
                 {paymentComplete ? (
                   <div className="text-center py-8">
                     <Receipt className="h-16 w-16 text-green-500 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-green-600 mb-2">Payment Successful!</h3>
+                    <h3 className="text-xl font-semibold text-green-600 mb-2">
+                      Payment Successful!
+                    </h3>
                     <p className="text-gray-600">Thank you for your purchase</p>
                   </div>
                 ) : (
                   <>
                     <div className="mb-6">
-                      <h3 className="font-semibold mb-3">Select Payment Method</h3>
+                      <h3 className="font-semibold mb-3">
+                        Select Payment Method
+                      </h3>
                       <div className="grid grid-cols-3 gap-4">
-                        {paymentMethods.map(method => (
+                        {paymentMethods.map((method) => (
                           <button
                             key={method.id}
                             onClick={() => setSelectedPayment(method.id)}
                             className={`p-4 border rounded-lg flex flex-col items-center justify-center gap-2 transition-all duration-300 ${
                               selectedPayment === method.id
-                                ? 'border-blue-500 bg-blue-50'
-                                : 'hover:bg-gray-50'
+                                ? "border-blue-500 bg-blue-50 dark:bg-blue-950"
+                                : "hover:bg-gray-50 dark:hover:bg-gray-700"
                             }`}
                           >
                             {method.icon}
@@ -617,9 +905,9 @@ function App() {
                       </div>
                     </div>
 
-                    {selectedPayment === 'cash' && (
+                    {selectedPayment === "cash" && (
                       <div className="mb-6">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                           Received Amount
                         </label>
                         <input
@@ -629,8 +917,8 @@ function App() {
                           className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
                           placeholder="Enter amount"
                         />
-                        {receivedAmount && (
-                          <div className="mt-2 text-sm text-gray-600">
+                        {parseAmount(receivedAmount) !== null && (
+                          <div className="mt-2 text-sm text-gray-600 dark:text-gray-300">
                             Change: {formatPrice(getChange())}
                           </div>
                         )}
@@ -644,11 +932,15 @@ function App() {
                       </div>
                       <button
                         onClick={handlePayment}
-                        disabled={!selectedPayment || (selectedPayment === 'cash' && getChange() < 0)}
+                        disabled={
+                          !selectedPayment ||
+                          (selectedPayment === "cash" && !isValidCash())
+                        }
                         className={`w-full py-3 rounded-lg flex items-center justify-center space-x-2 transition-all duration-300 ${
-                          selectedPayment && !(selectedPayment === 'cash' && getChange() < 0)
-                            ? 'bg-green-600 hover:bg-green-700 text-white'
-                            : 'bg-gray-300 cursor-not-allowed text-gray-500'
+                          selectedPayment &&
+                          !(selectedPayment === "cash" && !isValidCash())
+                            ? "bg-green-600 hover:bg-green-700 text-white"
+                            : "bg-gray-300 cursor-not-allowed text-gray-500"
                         }`}
                       >
                         <CreditCard className="h-5 w-5" />
