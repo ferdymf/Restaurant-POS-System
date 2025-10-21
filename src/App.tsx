@@ -914,7 +914,7 @@ function App() {
                           type="text"
                           value={receivedAmount}
                           onChange={(e) => setReceivedAmount(e.target.value)}
-                          className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+                          className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 !text-black dark:!text-white bg-white dark:bg-gray-900 placeholder-gray-400 dark:placeholder-gray-500"
                           placeholder="Enter amount"
                         />
                         {parseAmount(receivedAmount) !== null && (
