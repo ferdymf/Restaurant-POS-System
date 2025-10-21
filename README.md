@@ -1,47 +1,65 @@
 
 # Restaurant POS System
 
-Aplikasi Point of Sale (POS) sederhana untuk restoran yang memungkinkan pengguna untuk melakukan transaksi pembayaran dan mengelola menu restoran. Sistem ini dirancang untuk mempermudah proses transaksi di kasir secara efisien.
+Aplikasi Point of Sale (POS) sederhana berbasis web untuk restoran, dibangun dengan Vite + React + TypeScript + TailwindCSS. Aplikasi ini mendukung pemesanan, keranjang, serta proses pembayaran dengan validasi yang aman.
 
 ## Fitur Utama
-- **Transaksi Pembayaran**: Melakukan transaksi pembayaran untuk setiap pesanan.
-- **Manajemen Menu**: Menambah, mengubah, dan menghapus menu restoran.
-- **Antarmuka Pengguna**: Antarmuka yang mudah digunakan untuk kasir.
+- **Daftar menu interaktif**: Grid produk dengan kategori (All, Drinks, Main Course, Beverages, Desserts) dan animasi transisi.
+- **Keranjang belanja**: Tambah, hapus item, dan ubah kuantitas dengan perhitungan total otomatis.
+- **Pembayaran**: Metode Cash, Credit Card, dan E-Wallet.
+- **Validasi cash yang aman**: Transaksi hanya diproses jika nominal cash valid dan >= total. Kembalian ditampilkan hanya saat input valid.
+- **Dark mode**: Mode gelap/terang dengan penyimpanan preferensi di `localStorage`.
+- **Animasi halus**: Transisi halaman dan item menggunakan `react-transition-group`.
 
-## Akses Online
-Website ini dapat diakses secara langsung di [https://restaurant-cashier.netlify.app/](https://restaurant-cashier.netlify.app/).
+## Tech Stack
+- **Build**: Vite 5
+- **UI**: React 18, TypeScript
+- **Style**: TailwindCSS, PostCSS, Autoprefixer
+- **Ikon**: lucide-react
+- **Animasi**: react-transition-group
+- **Linting**: ESLint (Flat config, TypeScript ESLint)
 
-## Instalasi
+## Persyaratan
+- Node.js 18 atau lebih baru (sesuai kebutuhan Vite 5)
+- NPM (terinstal bersama Node.js)
 
-Untuk menjalankan aplikasi ini secara lokal, ikuti langkah-langkah berikut:
-
-### Prasyarat
-Pastikan kamu telah menginstal perangkat lunak berikut:
-- Node.js (versi terbaru) [Download Node.js](https://nodejs.org/)
-- NPM (biasanya terinstal bersama Node.js)
-  
-### Langkah-langkah:
-1. Clone repositori ini ke komputer kamu:
-   ```bash
-   git clone https://github.com/ferdymf/Restaurant-POS-System.git
-   ```
-   
-2. Masuk ke direktori project:
-   ```bash
-   cd Restaurant-POS-System
-   ```
-
-3. Instal dependensi yang diperlukan:
+## Menjalankan Secara Lokal
+1. Instal dependensi:
    ```bash
    npm install
    ```
-
-4. Jalankan aplikasi:
+2. Jalankan server pengembangan:
    ```bash
-   npm start
+   npm run dev
    ```
+   Aplikasi akan berjalan di `http://localhost:3000`.
 
-Aplikasi akan berjalan di `http://localhost:3000` (atau port lain yang ditentukan).
+## Skrip yang Tersedia
+- `npm run dev` — Menjalankan server pengembangan Vite.
+- `npm run build` — Build untuk produksi ke folder `dist/`.
+- `npm run preview` — Menjalankan preview build produksi secara lokal.
+- `npm run lint` — Menjalankan ESLint.
 
-## Penggunaan
-Setelah aplikasi dijalankan, kasir dapat melakukan transaksi pembayaran untuk pesanan pelanggan dan mengelola menu yang tersedia.
+## Catatan Perilaku Pembayaran Tunai
+- Input nominal diterima sebagai teks dan diparsing secara aman, mengabaikan karakter non-angka.
+- Tombol "Process Payment" akan non-aktif sampai:
+  - Metode pembayaran dipilih, dan
+  - Jika memilih Cash, nominal yang dimasukkan valid serta `>= total`.
+- Kembalian (`Change`) hanya ditampilkan jika input valid dan tidak menghasilkan `NaN`.
+
+## Struktur Proyek Singkat
+- `src/main.tsx` — Entry React + mounting root.
+- `src/App.tsx` — UI dan logika POS, keranjang, pembayaran, dark mode.
+- `src/index.css` — Tailwind directives dan animasi CSS tambahan.
+- `vite.config.ts` — Konfigurasi Vite.
+- `tailwind.config.js`, `postcss.config.js` — Konfigurasi Tailwind & PostCSS.
+
+## Build & Deploy
+Build produksi:
+```bash
+npm run build
+```
+Hasil build tersedia di folder `dist/` dan dapat dideploy ke layanan statis seperti Netlify/Vercel/Cloudflare Pages.
+
+---
+Jika menemukan bug atau memiliki usulan fitur, silakan buat issue atau pull request.
